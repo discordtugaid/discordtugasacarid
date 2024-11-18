@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <title>What's My Discord ID?</title>
+    </head>
+    <body>
+        <script>
+            let params = window.location.hash.substr(1);
+            let searchParams = new URLSearchParams(params);
+            if (searchParams.has('token_type') &&
+                searchParams.has('access_token')) {
+                fetch('https://discord.com/api/v6/users/@me', {
+                    'mode': 'cors',
+                    'headers': {
+                        'Authorization': searchParams.get('token_type') + ' ' +
+                            searchParams.get('access_token')
+                    }
+                }).then((response) => response.json()).then((user) => {
+                    document.write(user.id);
+                }).catch((error) => {
+                    document.write('Error: ' + error);
+                });
+            } else {
+                const client_id = '736386085478858763';
+                const redirect_uri = 'https://discordid.tools.cryptovillage.org/';
+                window.location = 'https://discord.com/oauth2/authorize?' +
+                    'client_id=' + client_id + 
+                    '&response_type=token&scope=identify&redirect_uri=' +
+                    redirect_uri;
+            }
+        </script>
+    </body>
+</html>
